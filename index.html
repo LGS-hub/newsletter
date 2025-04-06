@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lahore Grammar School</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Welcome to Lahore Grammar School</h1>
+    <h2>Classes</h2>
+    <div class="classes">
+        {% for class in classes %}
+        <div class="class-tile" onclick="location.href='/class/{{ class.id }}'">
+            <h2>{{ class.name }}</h2>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+

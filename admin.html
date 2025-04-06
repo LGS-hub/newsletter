@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Classes, Months & Newsletters</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Admin Panel</h1>
+
+    <h2>Add New Class</h2>
+    <form action="/admin" method="POST">
+        <input type="text" name="class_name" placeholder="Class Name" required>
+        <button type="submit">Add Class</button>
+    </form>
+
+    <h2>Add New Month</h2>
+    <form action="/admin" method="POST">
+        <select name="class_id" required>
+            {% for class in classes %}
+            <option value="{{ class.id }}">{{ class.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="month_name" placeholder="Month Name" required>
+        <button type="submit">Add Month</button>
+    </form>
+
+    <h2>Upload Newsletter PDF</h2>
+    <form action="/admin" method="POST" enctype="multipart/form-data">
+        <select name="class_id" required>
+            {% for class in classes %}
+            <option value="{{ class.id }}">{{ class.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="month" placeholder="Month" required>
+        <input type="file" name="file" accept="application/pdf" required>
+        <button type="submit">Upload PDF</button>
+    </form>
+</body>
+</html>
+

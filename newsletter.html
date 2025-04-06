@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ newsletter.class_id }} - {{ newsletter.month }} Newsletter</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- PDF.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+    <style>
+        /* Remove default padding and margin */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #f4f4f4;
+        }
+
+        /* Container for the PDF viewer */
+        #pdf-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Ensure the pages are aligned at the top */
+            height: 100%;
+            overflow: auto;
+            background-color: #ffffff;
+        }
+
+        /* Styling for each PDF page */
+        .pdf-page {
+            width: 100%;
+            max-width: 800px; /* Limit the width of pages */
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="pdf-container">
+        <div id="pdf-viewer"></div>
+    </div>
+
+    <script>
+        // Path to your PDF file
+        const pdfUrl = "{{ url_for('static', filename='uploads/' + newsletter.pdf_filename) }}";
+
+        // Load the PDF file
+        pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf) {
+            // Render all pages of the PDF
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                renderPage(pdf, pageNum);
+            }
+        });
+
+        // Function to render a single page of the PDF
+        function renderPage(pdf, pageNum) {
+            pdf.getPage(pageNum).then(function(page) {
+                const scale = 1.2; // Lower scale to fit pages correctly in the viewport
+                const viewport = page.getViewport({ scale: scale });
+
+                // Create a canvas element for rendering the page
+                const canvas = document.createElement('canvas');
+                canvas.classList.add('pdf-page');
+                const context = canvas.getContext('2d');
+
+                // Set the width and height of the canvas to match the page's viewport
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                // Append the canvas to the viewer container
+                document.getElementById('pdf-viewer').appendChild(canvas);
+
+                // Render the page onto the canvas
+                page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+
