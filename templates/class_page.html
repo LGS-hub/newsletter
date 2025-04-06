@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ class_name }} - Lahore Grammar School</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>{{ class_name }} - Choose a Month</h1>
+    <div class="months">
+        {% for month in months %}
+        <div class="month-tile" onclick="location.href='/newsletter/{{ class_id }}/{{ month.name }}'">
+            <h3>{{ month.name }}</h3>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
